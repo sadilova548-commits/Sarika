@@ -15,7 +15,7 @@
 
 text-white font-bold">S</div>
             <span class="text-xl font-bold tracking-tight text-slate-900">Sarika</span>
-            <span class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-medium">ИИ-Учёба</span>
+            <span class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-medium">ИИ-Учёба (Gemini)</span>
         </div>
         <div class="text-sm text-slate-500">Без лимитов и подписок</div>
     </header>
@@ -24,7 +24,7 @@ text-white font-bold">S</div>
     <nav class="bg-white border-b border-slate-200 px-6 flex space-x-6">
         <button onclick="switchTab('desk')" id="btn-desk" class="py-3 font-medium text-indigo-600 border-b-2 border-indigo-600 cursor-pointer">Рабочий стол</button>
 
-        <button onclick="switchTab('chat')" id="btn-chat" class="py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer">Чат</button>
+        <button onclick="switchTab('chat')" id="btn-chat" class="py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer">Чат с Gemini</button>
         <button onclick="switchTab('library')" id="btn-library" class="py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer">Библиотека <span id="lib-count" class="ml-1 text-xs bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full">1</span></button>
     </nav>
 
@@ -52,16 +52,17 @@ emerald-600 hidden">Файл успешно добавлен в библиоте
             <div class="bg-white p-6 rounded-2xl border border-slate-200 h-[65vh] flex flex-col justify-between shadow-xs">
                 <div id="chat-messages" class="overflow-y-auto space-y-3 flex-1 pr-2">
                     <div class="bg-indigo-50 text-indigo-900 p-3 rounded-xl max-w-[85%] text-sm">
-                        Привет! Я Sarika, твой ИИ-помощник. Чем зайдемся сегодня? 🚀
-                    </div>
+                        Привет! Я настоящий Gemini, подключенный к твоему сайту Sarika. Что разбираем сегодня? 🚀
 
+                    </div>
                 </div>
                 <div class="flex gap-2 mt-4 pt-2 border-t border-slate-100">
-                    <input type="text" id="chat-input" placeholder="Спросите о чем угодно..." class="flex-1 border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500 text-sm" onkeydown="if(event.key === 'Enter') sendMessage()">
+                    <input type="text" id="chat-input" placeholder="Спросите Gemini о чем угодно..." class="flex-1 border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500 text-sm" onkeydown="if(event.key === 'Enter') sendMessage()">
                     <button onclick="sendMessage()" class="bg-indigo-600 text-white px-5 py-2 rounded-xl font-medium hover:bg-indigo-700 transition cursor-pointer text-sm">Отправить</button>
                 </div>
             </div>
         </div>
+
 
         <!-- Вкладка: Библиотека -->
         <div id="tab-library" class="hidden space-y-4">
@@ -72,8 +73,9 @@ emerald-600 hidden">Файл успешно добавлен в библиоте
                         <h3 class="font-semibold text-slate-800 text-sm">Cell Biology — Chapter 4.pdf</h3>
                         <p class="text-xs text-indigo-600 mt-1">Конспект создан ИИ</p>
                     </div>
-                    <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded-md">PDF</span>
+                    <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded-
 
+md">PDF</span>
                 </div>
             </div>
         </div>
@@ -82,15 +84,18 @@ emerald-600 hidden">Файл успешно добавлен в библиоте
     <script>
         let uploadedFiles = [{ name: "Cell Biology — Chapter 4.pdf", size: "2.4 MB" }];
 
+        // Вставьте ваш API-ключ Gemini внутрь кавычек ниже:
+        const apiKey = "AQ.Ab8RN6KhDu7ZLAmoDGToKE6yOhOH9x4WuoVhAygyzpdPRkncUA"; 
+
         function switchTab(tab) {
             ['desk', 'chat', 'library'].forEach(t => {
                 let el = document.getElementById('tab-' + t);
                 let btn = document.getElementById('btn-' + t);
                 if(el && btn) {
+
                     el.classList.add('hidden');
                     btn.className = "py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer";
                 }
-
             });
             let targetTab = document.getElementById('tab-' + tab);
             let targetBtn = document.getElementById('btn-' + tab);
@@ -102,10 +107,10 @@ emerald-600 hidden">Файл успешно добавлен в библиоте
 
         function handleFiles(files) {
             if (!files || files.length === 0) return;
+
             for (let file of files) {
                 uploadedFiles.push({ name: file.name, size: (file.size / (1024*1024)).toFixed(1) + " MB" });
             }
-
             updateLibrary();
             let status = document.getElementById('upload-status');
             if(status) {
@@ -117,12 +122,13 @@ emerald-600 hidden">Файл успешно добавлен в библиоте
         function updateLibrary() {
             let grid = document.getElementById('library-grid');
             let count = document.getElementById('lib-count');
-            if(count) count.innerText = uploadedFiles.length;
+            if(count) count.innerText = 
+
+uploadedFiles.length;
             if(!grid) return;
             grid.innerHTML = '';
             uploadedFiles.forEach(f => {
                 grid.innerHTML += `
-
                     <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex justify-between items-center">
                         <div>
                             <h3 class="font-semibold text-slate-800 text-sm">${f.name}</h3>
@@ -131,13 +137,12 @@ emerald-600 hidden">Файл успешно добавлен в библиоте
                         <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded-md uppercase">Файл</span>
                     </div>
                 `;
+
             });
         }
 
-        function sendMessage() {
-            let input = 
-
-document.getElementById('chat-input');
+        async function sendMessage() {
+            let input = document.getElementById('chat-input');
             if(!input) return;
             let text = input.value.trim();
             if (!text) return;
@@ -145,31 +150,85 @@ document.getElementById('chat-input');
             let chatBox = document.getElementById('chat-messages');
             if(!chatBox) return;
             
+            // Выводим сообщение пользователя
             chatBox.innerHTML += `
                 <div class="flex justify-end">
-                    <div class="bg-indigo-600 text-white p-3 rounded-xl max-w-[85%] text-sm">${text}</div>
+                    <div class="bg-indigo-600 text-white p-3 rounded-xl max-w-[85%] text-
+
+sm">${escapeHtml(text)}</div>
                 </div>
             `;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            setTimeout(() => {
-                let replies = [
-                    "Отличный вопрос! Основываясь на загруженных материалах, это ключевой аспект для изучения.",
-                    "Я проанализировала информацию. Давайте разберем этот момент подробнее...",
-                    "Интересная задача! Это поможет вам лучше разобраться в теме.",
-                    "Я зафиксировала это в контексте. Готова помочь с дальнейшими рассуждениями!"
-                ];
-                let randomReply = replies[Math.floor(Math.random() * replies.length)];
-                
+            if (apiKey === "ВАШ_КЛЮЧ_ЗДЕСЬ" || !apiKey) {
                 chatBox.innerHTML += `
-
                     <div class="flex justify-start">
-                        <div class="bg-indigo-50 text-indigo-900 p-3 rounded-xl max-w-[85%] text-sm">${randomReply}</div>
+                        <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Пожалуйста, вставьте ваш реальный API-ключ в коде файла index.html вместо "ВАШ_КЛЮЧ_ЗДЕСЬ".</div>
                     </div>
                 `;
                 chatBox.scrollTop = chatBox.scrollHeight;
-            }, 500);
+
+                return;
+            }
+
+            // Индикатор загрузки
+            let loadingId = 'loading_' + Date.now();
+            chatBox.innerHTML += `
+                <div id="${loadingId}" class="flex justify-start">
+                    <div class="bg-indigo-50 text-indigo-600 p-3 rounded-xl text-sm animate-pulse">Gemini думает...</div>
+                </div>
+            `;
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            try {
+                // Запрос к официальному REST API Gemini с правильной передачей ключа в заголовке
+
+                let response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "x-goog-api-key": apiKey
+                    },
+                    body: JSON.stringify({
+                        contents: [{ parts: [{ text: text }] }]
+                    })
+                });
+
+                let data = await response.json();
+                let aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text;
+
+                document.getElementById(loadingId).remove();
+
+                if (aiReply) {
+                    chatBox.innerHTML += `
+                        <div class="flex justify-start">
+                            <div class="bg-indigo-50 text-indigo-900 p-3 rounded-xl max-w-[85%] text-sm">${escapeHtml(aiReply)}</div>
+                        </div>
+                    `;
+                } else {
+                    chatBox.innerHTML += `
+                        <div class="flex justify-start">
+                            <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Ошибка ответа от API. Проверьте правильность ключа.</div>
+                        </div>
+
+                    `;
+                }
+            } catch (err) {
+                document.getElementById(loadingId).remove();
+                chatBox.innerHTML += `
+                    <div class="flex justify-start">
+                        <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Ошибка сети при запросе к Gemini.</div>
+                    </div>
+                `;
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        function escapeHtml(text) {
+            return text.replace(/&/g, 
+
+"&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
     </script>
 </body>
