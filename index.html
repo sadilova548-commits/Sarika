@@ -52,12 +52,12 @@ emerald-600 hidden">Файл успешно добавлен в библиоте
             <div class="bg-white p-6 rounded-2xl border border-slate-200 h-[65vh] flex flex-col justify-between shadow-xs">
                 <div id="chat-messages" class="overflow-y-auto space-y-3 flex-1 pr-2">
                     <div class="bg-indigo-50 text-indigo-900 p-3 rounded-xl max-w-[85%] text-sm">
-                        Привет! Я настоящий Gemini, подключенный к твоему сайту Sarika. Что разбираем сегодня? 🚀
+                        Привет! Я твой личный Gemini-помощник Sarika. Задай мне любой вопрос по учёбе! 🚀
 
                     </div>
                 </div>
                 <div class="flex gap-2 mt-4 pt-2 border-t border-slate-100">
-                    <input type="text" id="chat-input" placeholder="Спросите Gemini о чем угодно..." class="flex-1 border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500 text-sm" onkeydown="if(event.key === 'Enter') sendMessage()">
+                    <input type="text" id="chat-input" placeholder="Спросите о чем угодно..." class="flex-1 border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500 text-sm" onkeydown="if(event.key === 'Enter') sendMessage()">
                     <button onclick="sendMessage()" class="bg-indigo-600 text-white px-5 py-2 rounded-xl font-medium hover:bg-indigo-700 transition cursor-pointer text-sm">Отправить</button>
                 </div>
             </div>
@@ -84,15 +84,15 @@ md">PDF</span>
     <script>
         let uploadedFiles = [{ name: "Cell Biology — Chapter 4.pdf", size: "2.4 MB" }];
 
-        // Вставьте ваш API-ключ Gemini внутрь кавычек ниже:
-        const apiKey = "AQ.Ab8RN6KhDu7ZLAmoDGToKE6yOhOH9x4WuoVhAygyzpdPRkncUA"; 
+        // Ваш API-ключ уже встроен сюда:
+        const apiKey = "AQ.Ab8RN6KhDu7ZLAmoDGToKE6yOhOH9x4WuoVhAygyzpdPRkncUA";
 
         function switchTab(tab) {
             ['desk', 'chat', 'library'].forEach(t => {
                 let el = document.getElementById('tab-' + t);
                 let btn = document.getElementById('btn-' + t);
-                if(el && btn) {
 
+                if(el && btn) {
                     el.classList.add('hidden');
                     btn.className = "py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer";
                 }
@@ -106,8 +106,8 @@ md">PDF</span>
         }
 
         function handleFiles(files) {
-            if (!files || files.length === 0) return;
 
+            if (!files || files.length === 0) return;
             for (let file of files) {
                 uploadedFiles.push({ name: file.name, size: (file.size / (1024*1024)).toFixed(1) + " MB" });
             }
@@ -122,9 +122,8 @@ md">PDF</span>
         function updateLibrary() {
             let grid = document.getElementById('library-grid');
             let count = document.getElementById('lib-count');
-            if(count) count.innerText = 
 
-uploadedFiles.length;
+            if(count) count.innerText = uploadedFiles.length;
             if(!grid) return;
             grid.innerHTML = '';
             uploadedFiles.forEach(f => {
@@ -136,8 +135,8 @@ uploadedFiles.length;
                         </div>
                         <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded-md uppercase">Файл</span>
                     </div>
-                `;
 
+                `;
             });
         }
 
@@ -153,24 +152,13 @@ uploadedFiles.length;
             // Выводим сообщение пользователя
             chatBox.innerHTML += `
                 <div class="flex justify-end">
-                    <div class="bg-indigo-600 text-white p-3 rounded-xl max-w-[85%] text-
+                    <div class="bg-indigo-600 text-
 
-sm">${escapeHtml(text)}</div>
+white p-3 rounded-xl max-w-[85%] text-sm">${escapeHtml(text)}</div>
                 </div>
             `;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
-
-            if (apiKey === "ВАШ_КЛЮЧ_ЗДЕСЬ" || !apiKey) {
-                chatBox.innerHTML += `
-                    <div class="flex justify-start">
-                        <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Пожалуйста, вставьте ваш реальный API-ключ в коде файла index.html вместо "ВАШ_КЛЮЧ_ЗДЕСЬ".</div>
-                    </div>
-                `;
-                chatBox.scrollTop = chatBox.scrollHeight;
-
-                return;
-            }
 
             // Индикатор загрузки
             let loadingId = 'loading_' + Date.now();
@@ -181,14 +169,13 @@ sm">${escapeHtml(text)}</div>
             `;
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            try {
-                // Запрос к официальному REST API Gemini с правильной передачей ключа в заголовке
 
-                let response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent", {
+            try {
+                // Запрос к Gemini с вашим ключом в параметре
+                let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json",
-                        "x-goog-api-key": apiKey
+                        "Content-Type": "application/json"
                     },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: text }] }]
@@ -196,39 +183,41 @@ sm">${escapeHtml(text)}</div>
                 });
 
                 let data = await response.json();
-                let aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
                 document.getElementById(loadingId).remove();
 
-                if (aiReply) {
+                if (data.candidates && data.candidates[0].content) {
+                    let aiReply = data.candidates[0].content.parts[0].text;
                     chatBox.innerHTML += `
                         <div class="flex justify-start">
                             <div class="bg-indigo-50 text-indigo-900 p-3 rounded-xl max-w-[85%] text-sm">${escapeHtml(aiReply)}</div>
                         </div>
                     `;
                 } else {
+                    let errorMsg = data.error?.message || "Не удалось получить ответ от сервера.";
                     chatBox.innerHTML += `
-                        <div class="flex justify-start">
-                            <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Ошибка ответа от API. Проверьте правильность ключа.</div>
-                        </div>
 
+                        <div class="flex justify-start">
+                            <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Ошибка API: ${escapeHtml(errorMsg)}</div>
+                        </div>
                     `;
                 }
             } catch (err) {
                 document.getElementById(loadingId).remove();
                 chatBox.innerHTML += `
                     <div class="flex justify-start">
-                        <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Ошибка сети при запросе к Gemini.</div>
+                        <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Ошибка сети при запросе.</div>
                     </div>
                 `;
             }
-            chatBox.scrollTop = chatBox.scrollHeight;
+            chatBox.scrollTop = 
+
+chatBox.scrollHeight;
         }
 
+github
         function escapeHtml(text) {
-            return text.replace(/&/g, 
-
-"&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
     </script>
 </body>
