@@ -1,78 +1,78 @@
-[<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sarika вЂ” РР-РЈС‡С‘Р±Р°</title>
-<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sarika — ИИ-Учёба</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 <body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
-<!-- РЁР°РїРєР° -->
-<header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-xs">
-<div class="flex items-center space-x-3">
-<div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">S</div>
-<span class="text-xl font-bold tracking-tight text-slate-900">Sarika</span>
-<span class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-medium">РР-РЈС‡С‘Р±Р°</span>
-</div>
-<div class="text-sm text-slate-500">Р‘РµР· Р»РёРјРёС‚РѕРІ Рё РїРѕРґРїРёСЃРѕРє</div>
-</header>
+    <!-- Шапка -->
+    <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-xs">
+        <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">S</div>
+            <span class="text-xl font-bold tracking-tight text-slate-900">Sarika</span>
+            <span class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-medium">ИИ-Учёба</span>
+        </div>
+        <div class="text-sm text-slate-500">Без лимитов и подписок</div>
+    </header>
 
-<!-- РќР°РІРёРіР°С†РёСЏ -->
-<nav class="bg-white border-b border-slate-200 px-6 flex space-x-6">
-<button onclick="switchTab('desk')" id="btn-desk" class="py-3 font-medium text-indigo-600 border-b-2 border-indigo-600 cursor-pointer">Р Р°Р±РѕС‡РёР№ СЃС‚РѕР»</button>
-<button onclick="switchTab('chat')" id="btn-chat" class="py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer">Р§Р°С‚</button>
-<button onclick="switchTab('library')" id="btn-library" class="py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer">Р‘РёР±Р»РёРѕС‚РµРєР°</button>
-</nav>
+    <!-- Навигация -->
+    <nav class="bg-white border-b border-slate-200 px-6 flex space-x-6">
+        <button onclick="switchTab('desk')" id="btn-desk" class="py-3 font-medium text-indigo-600 border-b-2 border-indigo-600 cursor-pointer">Рабочий стол</button>
+        <button onclick="switchTab('chat')" id="btn-chat" class="py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer">Чат</button>
+        <button onclick="switchTab('library')" id="btn-library" class="py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer">Библиотека</button>
+    </nav>
 
-<!-- РћСЃРЅРѕРІРЅРѕР№ РєРѕРЅС‚РµРЅС‚ -->
-<main class="flex-1 max-w-5xl w-full mx-auto p-6">
-<!-- Р’РєР»Р°РґРєР°: Р Р°Р±РѕС‡РёР№ СЃС‚РѕР» -->
-<div id="tab-desk" class="space-y-6">
-<div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-xs text-center">
-<h1 class="text-2xl font-bold text-slate-900 mb-2">Р Р°Р±РѕС‡РёР№ СЃС‚РѕР»</h1>
-<p class="text-slate-500 mb-6">Р—Р°РіСЂСѓР·РёС‚Рµ РјР°С‚РµСЂРёР°Р»С‹ РґР»СЏ СѓС‡С‘Р±С‹ (PDF, TXT, С„РѕС‚Рѕ)</p>
-<div class="border-2 border-dashed border-slate-300 rounded-xl p-8 hover:border-indigo-500 transition cursor-pointer bg-slate-50">
-<p class="text-slate-600 font-medium">РџРµСЂРµС‚Р°С‰РёС‚Рµ С„Р°Р№Р» СЃСЋРґР° РёР»Рё <span class="text-indigo-600">РІС‹Р±РµСЂРёС‚Рµ</span></p>
-<p class="text-xs text-slate-400 mt-1">PDF, TXT, PNG, JPG вЂ” РґРѕ 25 РњР‘</p>
-</div>
-</div>
-</div>
+    <!-- Основной контент -->
+    <main class="flex-1 max-w-5xl w-full mx-auto p-6">
+        <!-- Вкладка: Рабочий стол -->
+        <div id="tab-desk" class="space-y-6">
+            <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-xs text-center">
+                <h1 class="text-2xl font-bold text-slate-900 mb-2">Рабочий стол</h1>
+                <p class="text-slate-500 mb-6">Загрузите материалы для учёбы (PDF, TXT, фото)</p>
+                <div class="border-2 border-dashed border-slate-300 rounded-xl p-8 hover:border-indigo-500 transition cursor-pointer bg-slate-50">
+                    <p class="text-slate-600 font-medium">Перетащите файл сюда или <span class="text-indigo-600">выберите</span></p>
+                    <p class="text-xs text-slate-400 mt-1">PDF, TXT, PNG, JPG — до 25 МБ</p>
+                </div>
+            </div>
+        </div>
 
-<!-- Р’РєР»Р°РґРєР°: Р§Р°С‚ -->
-<div id="tab-chat" class="hidden space-y-4">
-<div class="bg-white p-6 rounded-2xl border border-slate-200 h-[60vh] flex flex-col justify-between shadow-xs">
-<div class="overflow-y-auto space-y-3 flex-1 pr-2">
-<div class="bg-indigo-50 text-indigo-900 p-3 rounded-xl max-w-[80%] text-sm">
-РџСЂРёРІРµС‚! РЇ Sarika, С‚РІРѕР№ РР-РїРѕРјРѕС‰РЅРёРє. Р“РѕС‚РѕРІР° РѕС‚РІРµС‡Р°С‚СЊ РЅР° Р»СЋР±С‹Рµ С‚РІРѕРё РІРѕРїСЂРѕСЃС‹ Р±РµР· РѕРіСЂР°РЅРёС‡РµРЅРёР№! рџљЂ
-</div>
-</div>
-<div class="flex gap-2 mt-4">
-<input type="text" placeholder="РЎРїСЂРѕСЃРёС‚Рµ Рѕ С‡РµРј СѓРіРѕРґРЅРѕ..." class="flex-1 border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500 text-sm">
-<button class="bg-indigo-600 text-white px-5 py-2 rounded-xl font-medium hover:bg-indigo-700 transition cursor-pointer text-sm">РћС‚РїСЂР°РІРёС‚СЊ</button>
-</div>
-</div>
-</div>
+        <!-- Вкладка: Чат -->
+        <div id="tab-chat" class="hidden space-y-4">
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 h-[60vh] flex flex-col justify-between shadow-xs">
+                <div class="overflow-y-auto space-y-3 flex-1 pr-2">
+                    <div class="bg-indigo-50 text-indigo-900 p-3 rounded-xl max-w-[80%] text-sm">
+                        Привет! Я Sarika, твой ИИ-помощник. Готова отвечать на любые твои вопросы без ограничений! 🚀
+                    </div>
+                </div>
+                <div class="flex gap-2 mt-4">
+                    <input type="text" placeholder="Спросите о чем угодно..." class="flex-1 border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500 text-sm">
+                    <button class="bg-indigo-600 text-white px-5 py-2 rounded-xl font-medium hover:bg-indigo-700 transition cursor-pointer text-sm">Отправить</button>
+                </div>
+            </div>
+        </div>
 
-<!-- Р’РєР»Р°РґРєР°: Р‘РёР±Р»РёРѕС‚РµРєР° -->
-<div id="tab-library" class="hidden space-y-4">
-<h2 class="text-xl font-bold text-slate-900">Р’Р°С€Рё РјР°С‚РµСЂРёР°Р»С‹</h2>
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-<div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
-<h3 class="font-semibold text-slate-800">Cell Biology вЂ” Chapter 4.pdf</h3>
-<p class="text-xs text-indigo-600 mt-1">РљРѕРЅСЃРїРµРєС‚ СЃРѕР·РґР°РЅ РР</p>
-</div>
-</div>
-</div>
-</main>
-<script>
-function switchTab(tab) {
-['desk', 'chat', 'library'].forEach(t => {
-document.getElementById('tab-' + t).classList.add('hidden');
-document.getElementById('btn-' + t).className = "py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer";
-});
-document.getElementById('tab-' + tab).classList.remove('hidden');
-document.getElementById('btn-' + tab).className = "py-3 font-medium text-indigo-600 border-b-2 border-indigo-600 cursor-pointer";
-}
-</script>
+        <!-- Вкладка: Библиотека -->
+        <div id="tab-library" class="hidden space-y-4">
+            <h2 class="text-xl font-bold text-slate-900">Ваши материалы</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs">
+                    <h3 class="font-semibold text-slate-800">Cell Biology — Chapter 4.pdf</h3>
+                    <p class="text-xs text-indigo-600 mt-1">Конспект создан ИИ</p>
+                </div>
+            </div>
+        </div>
+    </main>
+ <script>
+        function switchTab(tab) {
+            ['desk', 'chat', 'library'].forEach(t => {
+                document.getElementById('tab-' + t).classList.add('hidden');
+                document.getElementById('btn-' + t).className = "py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer";
+            });
+            document.getElementById('tab-' + tab).classList.remove('hidden');
+            document.getElementById('btn-' + tab).className = "py-3 font-medium text-indigo-600 border-b-2 border-indigo-600 cursor-pointer";
+        }
+    </script>
 </body>
 </html>
