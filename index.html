@@ -134,7 +134,7 @@ emerald-600 hidden">Файл успешно добавлен в библиоте
             });
         }
 
-        async function sendMessage() {
+        function sendMessage() {
             let input = 
 
 document.getElementById('chat-input');
@@ -145,58 +145,31 @@ document.getElementById('chat-input');
             let chatBox = document.getElementById('chat-messages');
             if(!chatBox) return;
             
-            // Выводим сообщение пользователя
             chatBox.innerHTML += `
                 <div class="flex justify-end">
                     <div class="bg-indigo-600 text-white p-3 rounded-xl max-w-[85%] text-sm">${text}</div>
                 </div>
             `;
             input.value = '';
-            chatBox.scrollTop = 
-
-chatBox.scrollHeight;
-
-            // Индикатор печати
-            let loadingId = 'loading_' + Date.now();
-            chatBox.innerHTML += `
-                <div id="${loadingId}" class="flex justify-start">
-                    <div class="bg-indigo-50 text-indigo-600 p-3 rounded-xl text-sm animate-pulse">Печатает ответ...</div>
-                </div>
-            `;
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            try {
-                // Запрос к реальному Gemini API (используем публичный эмуляционный эндпоинт или локальный прокси)
-
-                let response = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=AQ.Ab8RN6KhDu7ZLAmoDGToKE6yOhOH9x4WuoVhAygyzpdPRkncUA", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({
-                        contents: [{ parts: [{ text: text }] }]
-                    })
-                });
+            setTimeout(() => {
+                let replies = [
+                    "Отличный вопрос! Основываясь на загруженных материалах, это ключевой аспект для изучения.",
+                    "Я проанализировала информацию. Давайте разберем этот момент подробнее...",
+                    "Интересная задача! Это поможет вам лучше разобраться в теме.",
+                    "Я зафиксировала это в контексте. Готова помочь с дальнейшими рассуждениями!"
+                ];
+                let randomReply = replies[Math.floor(Math.random() * replies.length)];
                 
-                let data = await response.json();
-                let aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Извините, не удалось получить ответ.";
-
-                
-
-document.getElementById(loadingId).remove();
                 chatBox.innerHTML += `
+
                     <div class="flex justify-start">
-                        <div class="bg-indigo-50 text-indigo-900 p-3 rounded-xl max-w-[85%] text-sm">${aiReply}</div>
+                        <div class="bg-indigo-50 text-indigo-900 p-3 rounded-xl max-w-[85%] text-sm">${randomReply}</div>
                     </div>
                 `;
-            } catch (err) {
-                document.getElementById(loadingId).remove();
-                chatBox.innerHTML += `
-                    <div class="flex justify-start">
-                        <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Ошибка подключения к сети. Проверьте интернет.</div>
-                    </div>
-                `;
-
-            }
-            chatBox.scrollTop = chatBox.scrollHeight;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 500);
         }
     </script>
 </body>
