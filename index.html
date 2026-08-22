@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -84,14 +83,15 @@ md">PDF</span>
     <script>
         let uploadedFiles = [{ name: "Cell Biology — Chapter 4.pdf", size: "2.4 MB" }];
 
-        // Ваш API-ключ уже встроен сюда:
+        // Ваш ключ с префиксом AQ. вставлен сюда:
         const apiKey = "AQ.Ab8RN6KhDu7ZLAmoDGToKE6yOhOH9x4WuoVhAygyzpdPRkncUA";
 
         function switchTab(tab) {
             ['desk', 'chat', 'library'].forEach(t => {
                 let el = document.getElementById('tab-' + t);
-                let btn = document.getElementById('btn-' + t);
+                let btn = 
 
+document.getElementById('btn-' + t);
                 if(el && btn) {
                     el.classList.add('hidden');
                     btn.className = "py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer";
@@ -106,7 +106,6 @@ md">PDF</span>
         }
 
         function handleFiles(files) {
-
             if (!files || files.length === 0) return;
             for (let file of files) {
                 uploadedFiles.push({ name: file.name, size: (file.size / (1024*1024)).toFixed(1) + " MB" });
@@ -121,8 +120,9 @@ md">PDF</span>
 
         function updateLibrary() {
             let grid = document.getElementById('library-grid');
-            let count = document.getElementById('lib-count');
+            let count = 
 
+document.getElementById('lib-count');
             if(count) count.innerText = uploadedFiles.length;
             if(!grid) return;
             grid.innerHTML = '';
@@ -134,8 +134,8 @@ md">PDF</span>
                             <p class="text-xs text-indigo-600 mt-1">Загружено • ${f.size}</p>
                         </div>
                         <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded-md uppercase">Файл</span>
-                    </div>
 
+                    </div>
                 `;
             });
         }
@@ -149,18 +149,16 @@ md">PDF</span>
             let chatBox = document.getElementById('chat-messages');
             if(!chatBox) return;
             
-            // Выводим сообщение пользователя
             chatBox.innerHTML += `
                 <div class="flex justify-end">
-                    <div class="bg-indigo-600 text-
+                    <div class="bg-indigo-600 text-white p-3 rounded-xl max-w-[85%] text-
 
-white p-3 rounded-xl max-w-[85%] text-sm">${escapeHtml(text)}</div>
+sm">${escapeHtml(text)}</div>
                 </div>
             `;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // Индикатор загрузки
             let loadingId = 'loading_' + Date.now();
             chatBox.innerHTML += `
                 <div id="${loadingId}" class="flex justify-start">
@@ -169,13 +167,14 @@ white p-3 rounded-xl max-w-[85%] text-sm">${escapeHtml(text)}</div>
             `;
             chatBox.scrollTop = chatBox.scrollHeight;
 
-
             try {
-                // Запрос к Gemini с вашим ключом в параметре
-                let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${apiKey}`, {
+
+                // Запрос настроен специально под Bearer-авторизацию ключей AQ.
+                let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${apiKey}`
                     },
                     body: JSON.stringify({
                         contents: [{ parts: [{ text: text }] }]
@@ -194,7 +193,7 @@ white p-3 rounded-xl max-w-[85%] text-sm">${escapeHtml(text)}</div>
                         </div>
                     `;
                 } else {
-                    let errorMsg = data.error?.message || "Не удалось получить ответ от сервера.";
+                    let errorMsg = data.error?.message || "Ошибка ответа от сервера.";
                     chatBox.innerHTML += `
 
                         <div class="flex justify-start">
@@ -206,7 +205,7 @@ white p-3 rounded-xl max-w-[85%] text-sm">${escapeHtml(text)}</div>
                 document.getElementById(loadingId).remove();
                 chatBox.innerHTML += `
                     <div class="flex justify-start">
-                        <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Ошибка сети при запросе.</div>
+                        <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Ошибка сети.</div>
                     </div>
                 `;
             }
@@ -215,7 +214,6 @@ white p-3 rounded-xl max-w-[85%] text-sm">${escapeHtml(text)}</div>
 chatBox.scrollHeight;
         }
 
-github
         function escapeHtml(text) {
             return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         }
