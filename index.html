@@ -3,220 +3,295 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sarika — ИИ-Учёба</title>
+    <title>Sarika — Умный ИИ-Помощник</title>
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="bg-slate-50 text-slate-800 font-sans min-h-screen flex flex-col">
-    <!-- Шапка -->
-    <header class="bg-white border-b border-slate-200 px-6 py-3 flex items-center justify-between shadow-xs">
-        <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center 
+<body class="bg-slate-100 text-slate-800 font-sans min-h-screen flex flex-col">
 
-text-white font-bold">S</div>
-            <span class="text-xl font-bold tracking-tight text-slate-900">Sarika</span>
-            <span class="text-xs bg-indigo-50 text-indigo-700 px-2 py-0.5 rounded-full font-medium">ИИ-Учёба (Gemini)</span>
-        </div>
-        <div class="text-sm text-slate-500">Без лимитов и подписок</div>
-    </header>
-
-    <!-- Навигация -->
-    <nav class="bg-white border-b border-slate-200 px-6 flex space-x-6">
-        <button onclick="switchTab('desk')" id="btn-desk" class="py-3 font-medium text-indigo-600 border-b-2 border-indigo-600 cursor-pointer">Рабочий стол</button>
-
-        <button onclick="switchTab('chat')" id="btn-chat" class="py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer">Чат с Gemini</button>
-        <button onclick="switchTab('library')" id="btn-library" class="py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer">Библиотека <span id="lib-count" class="ml-1 text-xs bg-indigo-100 text-indigo-700 px-1.5 py-0.5 rounded-full">1</span></button>
-    </nav>
-
-    <!-- Основной контент -->
-    <main class="flex-1 max-w-5xl w-full mx-auto p-6">
-        <!-- Вкладка: Рабочий стол -->
-        <div id="tab-desk" class="space-y-6">
-            <div class="bg-white p-8 rounded-2xl border border-slate-200 shadow-xs text-center">
-
-                <h1 class="text-2xl font-bold text-slate-900 mb-2">Рабочий стол</h1>
-                <p class="text-slate-500 mb-6">Загрузите материалы для учёбы (PDF, TXT, фото)</p>
-                <label class="border-2 border-dashed border-slate-300 rounded-xl p-8 hover:border-indigo-500 transition cursor-pointer bg-slate-50 block">
-                    <input type="file" id="file-input" class="hidden" multiple onchange="handleFiles(this.files)">
-                    <p class="text-slate-600 font-medium">Перетащите файл сюда или <span class="text-indigo-600 underline">выберите</span></p>
-                    <p class="text-xs text-slate-400 mt-1">PDF, TXT, PNG, JPG — до 25 МБ</p>
-                </label>
-                <div id="upload-status" class="mt-4 text-sm font-medium text-
-
-emerald-600 hidden">Файл успешно добавлен в библиотеку! ✨</div>
+    <!-- 1. ЭКРАН АВТОРИЗАЦИИ (Скрывается после входа) -->
+    <div id="auth-screen" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl text-center space-y-6">
+            <div class="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center text-white text-3xl font-bold mx-auto shadow-lg shadow-indigo-200">S</div>
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900">Добро пожаловать в Sarika</h2>
+                <p class="text-sm text-slate-500 mt-1">Твой универсальный ИИ-помощник для учёбы и жизни</p>
             </div>
+            <div class="space-y-3">
+                <button onclick="login('Google')" class="w-full bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-medium py-3 px-4 rounded-xl flex items-center justify-center gap-3 transition cursor-pointer shadow-xs">
+                    <i class="fa-brands fa-google text-red-500"></i> Войти через Google
+                </button>
+                <button onclick="login('Email')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-4 rounded-xl transition cursor-pointer shadow-md shadow-indigo-100">
+                    Войти по Email / Регистрация
+                </button>
+            </div>
+            <p class="text-xs text-slate-400">Входя в систему, вы принимаете условия использования</p>
         </div>
+    </div>
 
-        <!-- Вкладка: Чат -->
-        <div id="tab-chat" class="hidden space-y-4">
-            <div class="bg-white p-6 rounded-2xl border border-slate-200 h-[65vh] flex flex-col justify-between shadow-xs">
-                <div id="chat-messages" class="overflow-y-auto space-y-3 flex-1 pr-2">
-                    <div class="bg-indigo-50 text-indigo-900 p-3 rounded-xl max-w-[85%] text-sm">
-                        Привет! Я твой личный Gemini-помощник Sarika. Задай мне любой вопрос по учёбе! 🚀
+    <!-- 2. ЕДИНЫЙ РАБОЧИЙ СТОЛ (ALL-IN-ONE DASHBOARD) -->
+    <div class="flex-1 flex h-screen overflow-hidden">
+        
+        <!-- Левая панель (Sidebar) -->
+        <aside class="w-72 bg-white border-r border-slate-200 flex flex-col justify-between p-4 hidden md:flex">
+            <div class="space-y-6">
+                <!-- Логотип -->
+                <div class="flex items-center space-x-3 px-2">
+                    <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center text-white font-bold">S</div>
+                    <span class="text-xl font-bold text-slate-900 tracking-tight">Sarika AI</span>
+                </div>
 
+                <button onclick="startNewChat()" class="w-full bg-indigo-50 text-indigo-700 hover:bg-indigo-100 font-medium py-2.5 px-4 rounded-xl flex items-center justify-center gap-2 transition cursor-pointer">
+                    <i class="fa-solid fa-plus"></i> Новый чат
+                </button>
+
+                <!-- Счетчики и Лимиты -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2">
+                    <div class="flex justify-between items-center text-xs font-semibold text-slate-600">
+                        <span>Лимит файлов на сегодня:</span>
+                        <span id="file-limit-badge" class="bg-indigo-600 text-white px-2 py-0.5 rounded-full">2 / 2</span>
+                    </div>
+                    <p class="text-[11px] text-slate-400">Текстовые сообщения без лимита</p>
+                </div>
+
+                <!-- Библиотека файлов -->
+                <div class="space-y-2">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2">Файлы</span>
+                    <label class="border-2 border-dashed border-slate-300 hover:border-indigo-500 bg-slate-50 hover:bg-indigo-50/30 rounded-xl p-3 text-center cursor-pointer block transition">
+                        <input type="file" id="file-input" class="hidden" onchange="uploadFile(this.files)">
+                        <i class="fa-solid fa-cloud-arrow-up text-indigo-600 text-lg mb-1 block"></i>
+                        <span class="text-xs font-medium text-slate-600 block">Загрузить PDF / Фото</span>
+                    </label>
+                    <div id="file-list" class="space-y-1 max-h-36 overflow-y-auto text-xs"></div>
+                </div>
+
+                <!-- История чатов -->
+                <div class="space-y-2">
+                    <span class="text-xs font-bold text-slate-400 uppercase tracking-wider px-2">История</span>
+                    <div id="chat-history" class="space-y-1 text-sm text-slate-600">
+                        <div class="p-2 bg-indigo-50/50 text-indigo-700 rounded-lg font-medium truncate cursor-pointer">Текущий диалог</div>
                     </div>
                 </div>
-                <div class="flex gap-2 mt-4 pt-2 border-t border-slate-100">
-                    <input type="text" id="chat-input" placeholder="Спросите о чем угодно..." class="flex-1 border border-slate-300 rounded-xl px-4 py-2 focus:outline-none focus:border-indigo-500 text-sm" onkeydown="if(event.key === 'Enter') sendMessage()">
-                    <button onclick="sendMessage()" class="bg-indigo-600 text-white px-5 py-2 rounded-xl font-medium hover:bg-indigo-700 transition cursor-pointer text-sm">Отправить</button>
+            </div>
+
+            <!-- Профиль -->
+            <div id="user-profile" class="border-t border-slate-200 pt-3 flex items-center justify-between px-2">
+                <div class="flex items-center space-x-2">
+                    <div class="w-8 h-8 bg-slate-300 rounded-full flex items-center justify-center font-bold text-slate-600" id="user-avatar">U</div>
+                    <span class="text-sm font-medium text-slate-700 truncate max-w-[110px]" id="user-name">Пользователь</span>
+                </div>
+                <button onclick="logout()" class="text-slate-400 hover:text-rose-500 transition cursor-pointer"><i class="fa-solid fa-right-from-bracket"></i></button>
+            </div>
+        </aside>
+
+        <!-- Главная зона чата и инструментов -->
+        <main class="flex-1 flex flex-col bg-slate-50">
+            
+            <!-- Интерактивные инструменты (Верхняя панель) -->
+            <header class="bg-white border-b border-slate-200 p-4 flex gap-2 overflow-x-auto shadow-2xs">
+                <button onclick="runTool('flashcards')" class="bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition cursor-pointer">
+                    <i class="fa-solid fa-clone"></i> 🎴 Флеш-карточки
+                </button>
+                <button onclick="runTool('quiz')" class="bg-emerald-50 hover:bg-emerald-100 text-emerald-700 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition cursor-pointer">
+                    <i class="fa-solid fa-list-check"></i> 📊 Квиз / Тест
+                </button>
+                <button onclick="runTool('mindmap')" class="bg-purple-50 hover:bg-purple-100 text-purple-700 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition cursor-pointer">
+                    <i class="fa-solid fa-sitemap"></i> 🧠 Mind Map
+                </button>
+                <button onclick="runTool('summary')" class="bg-amber-50 hover:bg-amber-100 text-amber-700 px-4 py-2 rounded-xl text-xs font-semibold flex items-center gap-2 whitespace-nowrap transition cursor-pointer">
+                    <i class="fa-solid fa-file-contract"></i> 📝 Краткий конспект
+                </button>
+            </header>
+
+            <!-- Чат -->
+            <div id="chat-messages" class="flex-1 overflow-y-auto p-6 space-y-4">
+                <div class="bg-indigo-600 text-white p-4 rounded-2xl max-w-lg text-sm shadow-md">
+                    Привет! Я твой универсальный ИИ-ассистент Sarika 🚀. Задавай любые вопросы, общайся на любом языке или используй инструменты выше!
                 </div>
             </div>
-        </div>
 
-
-        <!-- Вкладка: Библиотека -->
-        <div id="tab-library" class="hidden space-y-4">
-            <h2 class="text-xl font-bold text-slate-900">Ваши материалы</h2>
-            <div id="library-grid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex justify-between items-center">
-                    <div>
-                        <h3 class="font-semibold text-slate-800 text-sm">Cell Biology — Chapter 4.pdf</h3>
-                        <p class="text-xs text-indigo-600 mt-1">Конспект создан ИИ</p>
-                    </div>
-                    <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded-
-
-md">PDF</span>
+            <!-- Ввод сообщения -->
+            <div class="p-4 bg-white border-t border-slate-200">
+                <div class="max-w-4xl mx-auto flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Спросите о чём угодно на любом языке..." class="flex-1 border border-slate-300 rounded-xl px-4 py-3 text-sm focus:outline-none focus:border-indigo-600" onkeydown="if(event.key==='Enter') sendMsg()">
+                    <button onclick="sendMsg()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-3 rounded-xl font-medium text-sm transition cursor-pointer shadow-md shadow-indigo-100">
+                        Отправить
+                    </button>
                 </div>
             </div>
+        </main>
+    </div>
+
+    <!-- 3. МОДАЛЬНОЕ ОКНО ЛИМИТА И РЕКЛАМНОГО ВИДЕО -->
+    <div id="ad-modal" class="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl p-6 max-w-sm w-full text-center space-y-4 shadow-2xl">
+            <div class="w-12 h-12 bg-amber-100 text-amber-600 rounded-full flex items-center justify-center text-xl mx-auto"><i class="fa-solid fa-film"></i></div>
+            <h3 class="text-lg font-bold text-slate-900">Дневной лимит исчерпан!</h3>
+            <p class="text-xs text-slate-500">Вы использовали свои 2 бесплатных файла на сегодня. Посмотрите видео, чтобы получить +1 дополнительную загрузку!</p>
+            
+            <div id="video-box" class="hidden bg-slate-900 text-white p-8 rounded-2xl text-xs animate-pulse">
+                🎬 Воспроизведение рекламного ролика... <br><span id="timer" class="font-bold text-lg mt-2 block">5</span>
+            </div>
+
+            <button id="watch-ad-btn" onclick="watchAd()" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-medium py-2.5 px-4 rounded-xl text-sm transition cursor-pointer">
+                Смотреть видео (+1 файл)
+            </button>
+            <button onclick="closeAdModal()" class="text-xs text-slate-400 hover:text-slate-600 block mx-auto">Закрыть</button>
         </div>
-    </main>
+    </div>
 
     <script>
-        let uploadedFiles = [{ name: "Cell Biology — Chapter 4.pdf", size: "2.4 MB" }];
+        const apiKey = "AQ.Ab8RN6KhDu7ZLAmoDGToKE6yOhOH9x4WuoVhAygyzpdPRkncUA"; // Твой ключ
+        let fileLimit = 2;
+        let adUsedToday = false;
+        let fileContext = "";
 
-        // Ваш ключ с префиксом AQ. вставлен сюда:
-        const apiKey = "AQ.Ab8RN6KhDu7ZLAmoDGToKE6yOhOH9x4WuoVhAygyzpdPRkncUA";
+        // Инициализация при загрузке
+        window.onload = function() {
+            checkLimits();
+        };
 
-        function switchTab(tab) {
-            ['desk', 'chat', 'library'].forEach(t => {
-                let el = document.getElementById('tab-' + t);
-                let btn = 
-
-document.getElementById('btn-' + t);
-                if(el && btn) {
-                    el.classList.add('hidden');
-                    btn.className = "py-3 font-medium text-slate-500 hover:text-slate-800 cursor-pointer";
-                }
-            });
-            let targetTab = document.getElementById('tab-' + tab);
-            let targetBtn = document.getElementById('btn-' + tab);
-            if(targetTab && targetBtn) {
-                targetTab.classList.remove('hidden');
-                targetBtn.className = "py-3 font-medium text-indigo-600 border-b-2 border-indigo-600 cursor-pointer";
+        function checkLimits() {
+            const today = new Date().toDateString();
+            const savedDate = localStorage.getItem('limit_date');
+            
+            if (savedDate !== today) {
+                localStorage.setItem('limit_date', today);
+                localStorage.setItem('file_limit', '2');
+                localStorage.setItem('ad_used', 'false');
             }
+            
+            fileLimit = parseInt(localStorage.getItem('file_limit') || '2');
+            adUsedToday = localStorage.getItem('ad_used') === 'true';
+            document.getElementById('file-limit-badge').innerText = `${fileLimit} / 2`;
         }
 
-        function handleFiles(files) {
+        function login(provider) {
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('user-name').innerText = provider === 'Google' ? 'Google User' : 'User';
+            document.getElementById('user-avatar').innerText = provider[0];
+        }
+
+        function logout() {
+            document.getElementById('auth-screen').classList.remove('hidden');
+        }
+
+        function uploadFile(files) {
             if (!files || files.length === 0) return;
-            for (let file of files) {
-                uploadedFiles.push({ name: file.name, size: (file.size / (1024*1024)).toFixed(1) + " MB" });
+            
+            if (fileLimit <= 0) {
+                document.getElementById('ad-modal').classList.remove('hidden');
+                return;
             }
-            updateLibrary();
-            let status = document.getElementById('upload-status');
-            if(status) {
-                status.classList.remove('hidden');
-                setTimeout(() => status.classList.add('hidden'), 4000);
+
+            let file = files[0];
+            fileLimit--;
+            localStorage.setItem('file_limit', fileLimit);
+            document.getElementById('file-limit-badge').innerText = `${fileLimit} / 2`;
+
+            let list = document.getElementById('file-list');
+            list.innerHTML += `<div class="p-2 bg-slate-100 rounded border border-slate-200 text-slate-700 truncate">${file.name}</div>`;
+
+            if (file.type.includes("text") || file.name.endsWith(".txt")) {
+                let reader = new FileReader();
+                reader.onload = e => { fileContext += `\n[Файл ${file.name}]:\n` + e.target.result; };
+                reader.readAsText(file);
             }
         }
 
-        function updateLibrary() {
-            let grid = document.getElementById('library-grid');
-            let count = 
+        function watchAd() {
+            if (adUsedToday) {
+                alert("Вы уже получали бонус за видео сегодня!");
+                return;
+            }
 
-document.getElementById('lib-count');
-            if(count) count.innerText = uploadedFiles.length;
-            if(!grid) return;
-            grid.innerHTML = '';
-            uploadedFiles.forEach(f => {
-                grid.innerHTML += `
-                    <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-xs flex justify-between items-center">
-                        <div>
-                            <h3 class="font-semibold text-slate-800 text-sm">${f.name}</h3>
-                            <p class="text-xs text-indigo-600 mt-1">Загружено • ${f.size}</p>
-                        </div>
-                        <span class="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded-md uppercase">Файл</span>
-
-                    </div>
-                `;
-            });
+            document.getElementById('watch-ad-btn').classList.add('hidden');
+            let vBox = document.getElementById('video-box');
+            vBox.classList.remove('hidden');
+            let sec = 5;
+            
+            let timer = setInterval(() => {
+                sec--;
+                document.getElementById('timer').innerText = sec;
+                if(sec <= 0) {
+                    clearInterval(timer);
+                    fileLimit++;
+                    adUsedToday = true;
+                    localStorage.setItem('file_limit', fileLimit);
+                    localStorage.setItem('ad_used', 'true');
+                    document.getElementById('file-limit-badge').innerText = `${fileLimit} / 2`;
+                    closeAdModal();
+                    alert("Вам начислена +1 попытка загрузки файла!");
+                }
+            }, 1000);
         }
 
-        async function sendMessage() {
+        function closeAdModal() {
+            document.getElementById('ad-modal').classList.add('hidden');
+            document.getElementById('watch-ad-btn').classList.remove('hidden');
+            document.getElementById('video-box').classList.add('hidden');
+        }
+
+        async function sendMsg(overrideText = null) {
             let input = document.getElementById('chat-input');
-            if(!input) return;
-            let text = input.value.trim();
+            let text = overrideText || input.value.trim();
             if (!text) return;
 
             let chatBox = document.getElementById('chat-messages');
-            if(!chatBox) return;
-            
-            chatBox.innerHTML += `
-                <div class="flex justify-end">
-                    <div class="bg-indigo-600 text-white p-3 rounded-xl max-w-[85%] text-
-
-sm">${escapeHtml(text)}</div>
-                </div>
-            `;
-            input.value = '';
+            chatBox.innerHTML += `<div class="flex justify-end"><div class="bg-indigo-600 text-white p-3 rounded-2xl max-w-[85%] text-sm">${escapeHtml(text)}</div></div>`;
+            if(!overrideText) input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            let loadingId = 'loading_' + Date.now();
-            chatBox.innerHTML += `
-                <div id="${loadingId}" class="flex justify-start">
-                    <div class="bg-indigo-50 text-indigo-600 p-3 rounded-xl text-sm animate-pulse">Gemini думает...</div>
-                </div>
-            `;
+            let loadingId = 'load_' + Date.now();
+            chatBox.innerHTML += `<div id="${loadingId}" class="flex justify-start"><div class="bg-white border border-slate-200 text-indigo-600 p-3 rounded-2xl text-sm animate-pulse">Sarika думает...</div></div>`;
             chatBox.scrollTop = chatBox.scrollHeight;
+
+            let systemPrompt = "Ты — Sarika, универсальный умный ИИ-помощник. Отвечай на любые вопросы на любом языке. Если загружены файлы, используй их контекст.";
+            if (fileContext) systemPrompt += "\nКонтекст файлов:" + fileContext;
 
             try {
-
-                // Запрос настроен специально под Bearer-авторизацию ключей AQ.
-                let response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, {
+                let res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                         "Authorization": `Bearer ${apiKey}`
                     },
                     body: JSON.stringify({
+                        systemInstruction: { parts: [{ text: systemPrompt }] },
                         contents: [{ parts: [{ text: text }] }]
                     })
                 });
-
-                let data = await response.json();
-
+                let data = await res.json();
                 document.getElementById(loadingId).remove();
 
                 if (data.candidates && data.candidates[0].content) {
-                    let aiReply = data.candidates[0].content.parts[0].text;
-                    chatBox.innerHTML += `
-                        <div class="flex justify-start">
-                            <div class="bg-indigo-50 text-indigo-900 p-3 rounded-xl max-w-[85%] text-sm">${escapeHtml(aiReply)}</div>
-                        </div>
-                    `;
+                    let reply = data.candidates[0].content.parts[0].text;
+                    chatBox.innerHTML += `<div class="flex justify-start"><div class="bg-white border border-slate-200 text-slate-800 p-4 rounded-2xl max-w-[85%] text-sm shadow-xs">${escapeHtml(reply)}</div></div>`;
                 } else {
-                    let errorMsg = data.error?.message || "Ошибка ответа от сервера.";
-                    chatBox.innerHTML += `
-
-                        <div class="flex justify-start">
-                            <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Ошибка API: ${escapeHtml(errorMsg)}</div>
-                        </div>
-                    `;
+                    chatBox.innerHTML += `<div class="flex justify-start"><div class="bg-rose-50 text-rose-700 p-3 rounded-2xl text-sm">Ошибка API. Лимит или ключ.</div></div>`;
                 }
-            } catch (err) {
+            } catch(e) {
                 document.getElementById(loadingId).remove();
-                chatBox.innerHTML += `
-                    <div class="flex justify-start">
-                        <div class="bg-rose-50 text-rose-900 p-3 rounded-xl max-w-[85%] text-sm">Ошибка сети.</div>
-                    </div>
-                `;
+                chatBox.innerHTML += `<div class="flex justify-start"><div class="bg-rose-50 text-rose-700 p-3 rounded-2xl text-sm">Ошибка соединения.</div></div>`;
             }
-            chatBox.scrollTop = 
-
-chatBox.scrollHeight;
+            chatBox.scrollTop = chatBox.scrollHeight;
         }
 
-        function escapeHtml(text) {
-            return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        function runTool(type) {
+            const prompts = {
+                flashcards: "Сгенерируй 5 флеш-карточек (вопрос-ответ) по текущему файлу или теме.",
+                quiz: "Создай короткий квиз-тест из 3 вопросов с вариантами ответов.",
+                mindmap: "Составь структурированный Mind Map (дерево идей и связей) по теме.",
+                summary: "Сделай краткий конспект главных мыслей в 3-5 пунктах."
+            };
+            sendMsg(prompts[type]);
         }
+
+        function startNewChat() {
+            document.getElementById('chat-messages').innerHTML = `<div class="bg-indigo-600 text-white p-4 rounded-2xl max-w-lg text-sm shadow-md">Новый чат начат! Задай вопрос Sarika 🚀</div>`;
+        }
+
+        function escapeHtml(t) { return t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
     </script>
 </body>
 </html>
